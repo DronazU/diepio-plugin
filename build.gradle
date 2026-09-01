@@ -1,0 +1,42 @@
+plugins {
+    id 'java-library'
+}
+
+group 'iodiep-plugin'
+version '1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly "com.github.Anuken.Mindustry:core:v159.7"
+    compileOnly "com.github.Anuken.Arc:arc-core:v159.7"
+}
+
+jar {
+    archiveFileName = "diepio-plugin.jar"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('cleanTargetDir', Delete) {
+    delete "C:/Games/Mindustry/server/config/mods/diepio-plugin.jar"
+}
+
+tasks.register('deployJar', Copy) {
+    dependsOn jar
+    from jar.archiveFile
+    into "C:/Games/Mindustry/server/config/mods"
+}
+
+jar.finalizedBy(deployJar)
