@@ -391,6 +391,11 @@ public class Main extends Plugin {
             mazeGenerated = false;
             generateMaze();
         });
+        Events.on(EventType.TileChangeEvent.class, e -> {
+            if (e.tile != null && activeShapes.containsKey(e.tile)) {
+                activeShapes.remove(e.tile);
+            }
+        });
         Events.on(EventType.PlayerJoin.class, this::onPlayerJoin);
         Events.on(EventType.BuildDamageEvent.class, this::onBuildDamage);
         Events.on(EventType.MenuOptionChooseEvent.class, this::onMenuOption);
